@@ -23,7 +23,6 @@ ROOT_TOKEN=$(grep "Initial Root Token" /vault/data/init.txt | awk '{print $4}')
 
 echo "Unsealing Vault..."
 vault operator unseal "$UNSEAL_KEY"
-
 echo "Logging in to Vault..."
 vault login "$ROOT_TOKEN"
 
@@ -31,7 +30,7 @@ if ! vault secrets list | grep -q "transit/"; then
   echo "Enabling transit secrets engine..."
   vault secrets enable -path=transit transit
   echo "Creating autounseal key..."
-  vault write transit/keys/autounseal
+  vault write --force transit/keys/autounseal
   echo "Writing autounseal policy..."
   vault policy write autounseal - <<EOF
 path "transit/encrypt/autounseal" {

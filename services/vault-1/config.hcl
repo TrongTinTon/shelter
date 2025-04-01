@@ -8,10 +8,10 @@ listener "tcp" {
 }
 
 seal "transit" {
-  address     = "http://vault-transit:8200"
+  address     = "http://vault-transit-1:8200"
   key_name    = "autounseal"
   mount_path  = "transit/"
-  token       = "${VAULT_TRANSIT_TOKEN}"
+  tls_skip_verify = "true"
 }
 
 api_addr = "http://vault-1:8200"

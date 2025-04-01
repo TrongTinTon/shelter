@@ -1,14 +1,19 @@
 #!/bin/sh
 set -e
 
-# Read the token from the Docker secret
-if [ -f /run/secrets/transit_token ]; then
-  TRANSIT_TOKEN=$(cat /run/secrets/transit_token)
-  echo "Using transit token from Docker secret."
-else
-  echo "Error: Transit token not found in /run/secrets/transit_token"
-  exit 1
-fi
+vault server -config=/vault/config/vault-config.hcl &
 
-export VAULT_TRANSIT_TOKEN=$TRANSIT_TOKEN
-vault server -config=/vault/config/vault-sealed.hcl
+VAULT_PID=$!
+
+echo "Waiting for Vault to start..."
+for i in $(seq 1 30); do
+  if vault status > /dev/null 2>&1; then
+    echo "Vault is up!"
+    break
+  fi
+  sleep 1
+done
+
+vault operator init
+
+wait "$VAULT_PID"

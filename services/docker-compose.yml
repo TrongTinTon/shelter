@@ -1,48 +1,33 @@
-secrets:
-  transit_token:
-    external: true
-
 services:
   vault-transit-1:
-    container_name: vault-transit-1
-    build:
-      context: ./vault-transit-1
-      dockerfile: ./Dockerfile
+    image: vault-transit-1
     hostname: vault-transit-1
     ports:
       - "8200:8200"
-    restart: always
     volumes:
       - vault-transit-1-data:/vault/data
     cap_add:
       - IPC_LOCK
     networks:
       - vault-network
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8200/v1/sys/health"]
-      interval: 5s
-      timeout: 3s
-      retries: 10
+    deploy:
+      mode: replicated
+      replicas: 1
 
   vault-1:
-    container_name: vault-1
-    build:
-      context: ./vault-1
-      dockerfile: ./Dockerfile
+    image: vault-1
     hostname: vault-1
     ports:
       - "8201:8200"
-    restart: always
     cap_add:
       - IPC_LOCK
-    secrets:
-      - transit_token
     volumes:
       - vault-1-data:/vault/data
-    depends_on:
-      - vault-transit-1
     networks:
       - vault-network
+    deploy:
+      mode: replicated
+      replicas: 1
 
 networks:
   vault-network:

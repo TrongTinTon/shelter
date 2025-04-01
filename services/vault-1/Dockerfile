@@ -9,5 +9,6 @@ RUN chmod +x /vault/entrypoint.sh
 
 ENV VAULT_ADDR=http://vault-1:8200
 ENV VAULT_API_ADDR=http://vault-1:8200
+ENV VAULT_TOKEN=""
 
 ENTRYPOINT ["/vault/entrypoint.sh"]
