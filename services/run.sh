@@ -6,6 +6,14 @@ if ! docker info --format '{{.Swarm.LocalNodeState}}' | grep -q "active"; then
   sudo docker swarm init
 fi
 
+cd vault-1
+docker build -t vault-1 .
+cd -
+
+cd vault-transit-1
+docker build -t vault-transit-1 .
+cd -
+
 echo "Starting full Vault stack..."
 sudo docker stack deploy --compose-file=docker-compose.yml vault
 
