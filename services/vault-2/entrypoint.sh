@@ -5,14 +5,14 @@ apk add curl jq
 source /vault/config/.env
 umask 077
 
-wait_for_transit() {
-  until curl -s http://vault-transit-1:8200/v1/sys/health | grep -q '"initialized":true'; do
-    echo "vault-transit not ready yet, waiting..."
+wait_for_leader() {
+  until curl -s http://vault-1:8200/v1/sys/health | grep -q '"initialized":true'; do
+    echo "vault-1 not ready yet, waiting..."
     sleep 2
   done
 }
 
-wait_for_transit
+wait_for_leader
 
 echo "Authenticating to Vault..."
 VAULT_TOKEN=$(curl -s \
@@ -40,6 +40,8 @@ export VAULT_TOKEN=$TRANSIT_TOKEN
 
 echo "Transit token retrieved successfully"
 echo "Starting vault..."
+
+vault operator raft join http://vault-1:8200 > /vault/data/init.txt
 vault server -config=/vault/config/vault-config.hcl &
 VAULT_PID=$!
 echo "Waiting for Vault to start..."
@@ -50,10 +52,5 @@ for i in $(seq 1 30); do
   fi
   sleep 1
 done
-
-if [ -f /vault/data/init.txt ]; then
-else
-  source /vault/init.sh
-fi
 
 wait "$VAULT_PID"

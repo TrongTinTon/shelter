@@ -29,6 +29,21 @@ services:
       mode: replicated
       replicas: 1
 
+  vault-2:
+    image: vault-2
+    hostname: vault-2
+    ports:
+      - "8202:8200"
+    cap_add:
+      - IPC_LOCK
+    volumes:
+      - vault-2-data:/vault/data
+    networks:
+      - vault-network
+    deploy:
+      mode: replicated
+      replicas: 1
+
 networks:
   vault-network:
     driver: overlay
@@ -37,3 +52,4 @@ networks:
 volumes:
   vault-transit-1-data:
   vault-1-data:
+  vault-2-data:

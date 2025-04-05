@@ -1,6 +1,6 @@
 storage "raft" {
   path = "/vault/data"
-  node_id = "vault-2"
+  node_id = "vault-1"
 }
 
 listener "tcp" {
@@ -15,6 +15,6 @@ seal "transit" {
   tls_skip_verify = "true"
 }
 
-api_addr = "http://vault-1:8200"
-cluster_addr = "http://vault-1:8201"
+api_addr = "http://vault-2:8200"
+cluster_addr = "http://vault-2:8201"
 ui = true
