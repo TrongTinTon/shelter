@@ -5,6 +5,13 @@ apk add curl jq
 source /vault/config/.env
 umask 077
 
+wait_for_transit() {
+  until curl -s http://vault-transit-1:8200/v1/sys/health | grep -q '"initialized":true'; do
+    echo "vault-leader not ready yet, waiting..."
+    sleep 2
+  done
+}
+
 echo "Authenticating to Vault..."
 VAULT_TOKEN=$(curl -s \
     --request POST \
