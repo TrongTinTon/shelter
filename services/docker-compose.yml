@@ -43,6 +43,21 @@ services:
     deploy:
       mode: replicated
       replicas: 1
+  
+  vault-3:
+    image: vault-3
+    hostname: vault-3
+    ports:
+      - "8203:8200"
+    cap_add:
+      - IPC_LOCK
+    volumes:
+      - vault-3-data:/vault/data
+    networks:
+      - vault-network
+    deploy:
+      mode: replicated
+      replicas: 1
 
 networks:
   vault-network:
@@ -53,3 +68,4 @@ volumes:
   vault-transit-1-data:
   vault-1-data:
   vault-2-data:
+  vault-3-data:

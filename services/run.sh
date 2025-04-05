@@ -10,6 +10,14 @@ cd vault-1
 docker build -t vault-1 .
 cd -
 
+cd vault-2
+docker build -t vault-2 .
+cd -
+
+cd vault-3
+docker build -t vault-3 .
+cd -
+
 cd vault-transit-1
 docker build -t vault-transit-1 .
 cd -
