@@ -52,7 +52,9 @@ for i in $(seq 1 30); do
 done
 
 if [ -f /vault/data/init.txt ]; then
+  echo "Vault already initialized"
 else
+  echo "Initializing vault..."
   source /vault/init.sh
 fi
 
