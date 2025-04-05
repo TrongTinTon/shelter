@@ -11,7 +11,7 @@ RUN chmod +x /vault/entrypoint.sh
 COPY init.sh /vault/init.sh
 RUN chmod +x /vault/init.sh
 
-ENV VAULT_ADDR=http://vault-1:8200
-ENV VAULT_API_ADDR=http://vault-1:8200
+ENV VAULT_ADDR=http://vault-2:8200
+ENV VAULT_API_ADDR=http://vault-2:8200
 
 ENTRYPOINT ["/vault/entrypoint.sh"]
