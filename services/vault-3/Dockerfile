@@ -9,7 +9,7 @@ RUN chmod 700 /vault/config/.env
 COPY entrypoint.sh /vault/entrypoint.sh
 RUN chmod +x /vault/entrypoint.sh
 
-ENV VAULT_ADDR=http://vault-3:8200
-ENV VAULT_API_ADDR=http://vault-3:8200
+ENV VAULT_ADDR=http://vault-1:8200
+ENV VAULT_API_ADDR=http://vault-1:8200
 
 ENTRYPOINT ["/vault/entrypoint.sh"]
